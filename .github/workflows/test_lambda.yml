@@ -1,0 +1,19 @@
+# ワークフローの作成
+name: test-githubaction
+
+# プッシュ実行時
+on:
+  push:
+    branches: [ feature/tsuchiya ] 
+
+# 
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Test Lambda update
+      run: |
+        cd lambda_code && zip -r package.zip ./*
+        aws lambda update-function-code --function-name test_RunEvery5minutes --zip-file fileb://package.zip --publish
